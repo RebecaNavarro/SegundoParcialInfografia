@@ -15,6 +15,8 @@ var state
 #puntae
 @onready var top_ui = get_parent().get_node("top_ui") 
 var current_score = 0
+var color_rainbow
+var is_rainbow = false
 
 #niveles
 @onready var game_timer: Timer = $"../game_timer"
@@ -227,8 +229,7 @@ func find_matches():
 		for j in height:
 			if all_pieces[i][j] != null:
 				var current_color = all_pieces[i][j].color
-				if (
-					i >= 2 and j >= 2 and
+				if (i >= 2 and j >= 2 and
 					all_pieces[i][j].color == current_color and
 					all_pieces[i - 1][j] != null and all_pieces[i - 2][j] != null and
 					all_pieces[i][j - 1] != null and all_pieces[i][j - 2] != null and
@@ -237,7 +238,20 @@ func find_matches():
 					all_pieces[i][j - 1].color == current_color and
 					all_pieces[i][j - 2].color == current_color
 				):
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
 					create_special_piece(i, j, current_color, false, true)
+					all_pieces[i-1][j].matched = true
+					all_pieces[i-1][j].dim()
+					all_pieces[i-2][j].matched = true
+					all_pieces[i-2][j].dim()
+					all_pieces[i][j-1].matched = true
+					all_pieces[i][j-1].dim()
+					all_pieces[i][j-2].matched = true
+					all_pieces[i][j-2].dim()
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
 				elif (
 					i <= width - 3 and j >= 2 and
 					all_pieces[i][j].color == current_color and
@@ -248,7 +262,20 @@ func find_matches():
 					all_pieces[i][j - 1].color == current_color and
 					all_pieces[i][j - 2].color == current_color
 				):
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
 					create_special_piece(i, j, current_color, false, true)
+					all_pieces[i+1][j].matched = true
+					all_pieces[i+1][j].dim()
+					all_pieces[i+2][j].matched = true
+					all_pieces[i+2][j].dim()
+					all_pieces[i][j-1].matched = true
+					all_pieces[i][j-1].dim()
+					all_pieces[i][j-2].matched = true
+					all_pieces[i][j-2].dim()
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
 				elif (
 					i >= 2 and j <= height - 3 and
 					all_pieces[i][j].color == current_color and
@@ -259,7 +286,20 @@ func find_matches():
 					all_pieces[i][j + 1].color == current_color and
 					all_pieces[i][j + 2].color == current_color
 				):
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
 					create_special_piece(i, j, current_color, false, true)
+					all_pieces[i-1][j].matched = true
+					all_pieces[i-1][j].dim()
+					all_pieces[i-2][j].matched = true
+					all_pieces[i-2][j].dim()
+					all_pieces[i][j+1].matched = true
+					all_pieces[i][j+1].dim()
+					all_pieces[i][j+2].matched = true
+					all_pieces[i][j+2].dim()
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
 				elif (
 					i <= width - 3 and j <= height - 3 and
 					all_pieces[i][j].color == current_color and
@@ -270,8 +310,21 @@ func find_matches():
 					all_pieces[i][j + 1].color == current_color and
 					all_pieces[i][j + 2].color == current_color
 				):
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
 					create_special_piece(i, j, current_color, false, true)
-				if (
+					all_pieces[i+1][j].matched = true
+					all_pieces[i+1][j].dim()
+					all_pieces[i+2][j].matched = true
+					all_pieces[i+2][j].dim()
+					all_pieces[i][j+1].matched = true
+					all_pieces[i][j+1].dim()
+					all_pieces[i][j+2].matched = true
+					all_pieces[i][j+2].dim()
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
+				elif (
 					i <= width - 5 
 					and all_pieces[i + 1] != null and all_pieces[i + 2] != null 
 					and all_pieces[i + 3] != null and all_pieces[i + 4] != null
@@ -279,8 +332,9 @@ func find_matches():
 					and all_pieces[i + 3][j] != null and all_pieces[i + 4][j] != null
 					and all_pieces[i + 1][j].color == current_color and all_pieces[i + 2][j].color == current_color and all_pieces[i + 3][j].color == current_color and all_pieces[i + 4][j].color == current_color
 				):
-					create_special_piece(i, j, current_color, true, true)
 					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
+					create_special_piece(i, j, current_color, true, true)
 					all_pieces[i + 1][j].matched = true
 					all_pieces[i + 1][j].dim()
 					all_pieces[i + 2][j].matched = true
@@ -289,6 +343,9 @@ func find_matches():
 					all_pieces[i + 3][j].dim()
 					all_pieces[i + 4][j].matched = true
 					all_pieces[i + 4][j].dim()
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
 				elif (
 					j <= height - 5
 					and all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null
@@ -296,8 +353,9 @@ func find_matches():
 					and all_pieces[i][j + 1].color == current_color and all_pieces[i][j + 2].color == current_color 
 					and all_pieces[i][j + 3].color == current_color and all_pieces[i][j + 4].color == current_color
 				):
-					create_special_piece(i, j, current_color, false, true)
 					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
+					create_special_piece(i, j, current_color, false, true)
 					all_pieces[i][j + 1].matched = true
 					all_pieces[i][j + 1].dim()
 					all_pieces[i][j + 2].matched = true
@@ -306,38 +364,46 @@ func find_matches():
 					all_pieces[i][j + 3].dim()
 					all_pieces[i][j + 4].matched = true
 					all_pieces[i][j + 4].dim()
-				elif (
-					i <= width - 4 
+					is_rainbow = true
+					get_parent().get_node("destroy_timer").start()
+					return
+				elif (i <= width - 4 
 					and all_pieces[i + 1] != null and all_pieces[i + 2] != null and all_pieces[i + 3] != null
 					and all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null and all_pieces[i + 3][j] != null
 					and all_pieces[i + 1][j].color == current_color and all_pieces[i + 2][j].color == current_color and all_pieces[i + 3][j].color == current_color
 				):
-					create_special_piece(i, j, current_color, true)
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
+					create_special_piece(i, j, current_color, true, is_rainbow)
 					all_pieces[i + 1][j].matched = true
 					all_pieces[i + 1][j].dim()
 					all_pieces[i + 2][j].matched = true
 					all_pieces[i + 2][j].dim()
 					all_pieces[i + 3][j].matched = true
 					all_pieces[i + 3][j].dim()
-				elif (
-					j <= height - 4 
+					is_rainbow = false
+					get_parent().get_node("destroy_timer").start()
+					return
+				elif (j <= height - 4 
 					and all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null and all_pieces[i][j + 3] != null
 					and all_pieces[i][j + 1].color == current_color and all_pieces[i][j + 2].color == current_color and all_pieces[i][j + 3].color == current_color
 				):
-					create_special_piece(i, j, current_color, false)
+					all_pieces[i][j].matched = true
+					all_pieces[i][j].dim()
+					create_special_piece(i, j, current_color, false, is_rainbow)
 					all_pieces[i][j + 1].matched = true
 					all_pieces[i][j + 1].dim()
 					all_pieces[i][j + 2].matched = true
 					all_pieces[i][j + 2].dim()
 					all_pieces[i][j + 3].matched = true
 					all_pieces[i][j + 3].dim()
+					is_rainbow = false
+					get_parent().get_node("destroy_timer").start()
+					return
 				#detect horizontal matches
-				elif (
-					i > 0 and i < width -1 
-					and 
-					all_pieces[i - 1][j] != null and all_pieces[i + 1][j]
-					and 
-					all_pieces[i - 1][j].color == current_color and all_pieces[i + 1][j].color == current_color
+				elif (i > 0 and i < width -1 
+					and all_pieces[i - 1][j] != null and all_pieces[i + 1][j]
+					and all_pieces[i - 1][j].color == current_color and all_pieces[i + 1][j].color == current_color
 				):
 					all_pieces[i - 1][j].matched = true
 					all_pieces[i - 1][j].dim()
@@ -345,13 +411,13 @@ func find_matches():
 					all_pieces[i][j].dim()
 					all_pieces[i + 1][j].matched = true
 					all_pieces[i + 1][j].dim()
+					is_rainbow = false
+					get_parent().get_node("destroy_timer").start()
+					return
 				# detect vertical matches
-				elif (
-					j > 0 and j < height -1 
-					and 
-					all_pieces[i][j - 1] != null and all_pieces[i][j + 1]
-					and 
-					all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color
+				elif (j > 0 and j < height -1 
+					and all_pieces[i][j - 1] != null and all_pieces[i][j + 1]
+					and all_pieces[i][j - 1].color == current_color and all_pieces[i][j + 1].color == current_color
 				):
 					all_pieces[i][j - 1].matched = true
 					all_pieces[i][j - 1].dim()
@@ -359,6 +425,9 @@ func find_matches():
 					all_pieces[i][j].dim()
 					all_pieces[i][j + 1].matched = true
 					all_pieces[i][j + 1].dim()
+					is_rainbow = false
+					get_parent().get_node("destroy_timer").start()
+					return
 					
 	get_parent().get_node("destroy_timer").start()
 
@@ -366,6 +435,7 @@ func create_special_piece(column, row, color, is_horizontal, is_rainbow := false
 	var special_piece_scene = null
 	if is_rainbow:
 		special_piece_scene = rainbow
+		set_color_rainbow(color)
 		update_score(15)
 	else:
 		if is_horizontal:
@@ -380,11 +450,17 @@ func create_special_piece(column, row, color, is_horizontal, is_rainbow := false
 		return
 	if special_piece.has_method("set_horizontal"):
 		special_piece.call("set_horizontal", is_horizontal)
+	if special_piece.has_method("set_rainbow"):
+		special_piece.call("set_rainbow", is_rainbow)
 	get_parent().add_child(special_piece)
 	all_pieces[column][row].queue_free()
 	special_piece.position = grid_to_pixel(column, row)
 	special_piece.is_special_piece = true
 	all_pieces[column][row] = special_piece
+
+func set_color_rainbow(color):
+	color_rainbow = color
+	return color_rainbow
 
 func destroy_matched():
 	var was_matched = false
@@ -394,9 +470,14 @@ func destroy_matched():
 				if all_pieces[i][j].is_special_piece:
 					if all_pieces[i][j].is_horizontal:
 						destroy_column(i, j) 
-					else:
+					elif not all_pieces[i][j].is_rainbow:
 						destroy_row(i, j)
-					was_matched = true
+						was_matched = true
+					else:
+						destroy_pieces_of_color(color_rainbow)
+						was_matched = true
+						all_pieces[i][j].queue_free()
+						all_pieces[i][j] = null
 				elif not all_pieces[i][j].is_special_piece:
 					was_matched = true
 					all_pieces[i][j].queue_free()
@@ -407,6 +488,14 @@ func destroy_matched():
 		get_parent().get_node("collapse_timer").start()
 	else:
 		swap_back()
+
+func destroy_pieces_of_color(value):
+	for i in width:
+		for j in height:
+			if all_pieces[i][j] != null:
+				if all_pieces[i][j].color == value or all_pieces[i][j].is_rainbow:
+					all_pieces[i][j].queue_free()
+					all_pieces[i][j] = null
 
 func destroy_row(column, row):
 	for i in width:
@@ -423,7 +512,7 @@ func destroy_column(column, row):
 func update_score(points):
 	current_score += points
 	top_ui.score_label.text = str(current_score)
-	if current_score == 10:
+	if current_score == 100:
 		state = WAIT
 		print("You won!")
 
