@@ -227,86 +227,50 @@ func find_matches():
 		for j in height:
 			if all_pieces[i][j] != null:
 				var current_color = all_pieces[i][j].color
-				if i >= 2 and j >= 2 and all_pieces[i][j].color == current_color:
-					if (
-						all_pieces[i - 1][j] != null and all_pieces[i - 2][j] != null and
-						all_pieces[i][j - 1] != null and all_pieces[i][j - 2] != null and
-						all_pieces[i - 1][j].color == current_color and
-						all_pieces[i - 2][j].color == current_color and
-						all_pieces[i][j - 1].color == current_color and
-						all_pieces[i][j - 2].color == current_color
-					):
-						create_special_piece(i, j, current_color, true, false)
-						all_pieces[i][j].matched = true
-						all_pieces[i][j].dim()
-						all_pieces[i][j - 1].matched = true
-						all_pieces[i][j - 1].dim()
-						all_pieces[i][j - 2].matched = true
-						all_pieces[i][j - 2].dim()
-						all_pieces[i - 1][j].matched = true
-						all_pieces[i - 1][j].dim()
-						all_pieces[i - 2][j].matched = true
-						all_pieces[i - 2][j].dim()
-				elif i >= 2 and j <= height - 3 and all_pieces[i][j].color == current_color:
-					if (
-						all_pieces[i - 1][j] != null and all_pieces[i - 2][j] != null and
-						all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null and
-						all_pieces[i - 1][j].color == current_color and
-						all_pieces[i - 2][j].color == current_color and
-						all_pieces[i][j + 1].color == current_color and
-						all_pieces[i][j + 2].color == current_color
-					):
-						create_special_piece(i, j, current_color, true, true)
-						all_pieces[i][j].matched = true
-						all_pieces[i][j].dim()
-						all_pieces[i][j + 1].matched = true
-						all_pieces[i][j + 1].dim()
-						all_pieces[i][j + 2].matched = true
-						all_pieces[i][j + 2].dim()
-						all_pieces[i - 1][j].matched = true
-						all_pieces[i - 1][j].dim()
-						all_pieces[i - 2][j].matched = true
-						all_pieces[i - 2][j].dim()
-				elif i <= width - 3 and j >= 2 and all_pieces[i][j].color == current_color:
-					if (
-						all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null and
-						all_pieces[i][j - 1] != null and all_pieces[i][j - 2] != null and
-						all_pieces[i + 1][j].color == current_color and
-						all_pieces[i + 2][j].color == current_color and
-						all_pieces[i][j - 1].color == current_color and
-						all_pieces[i][j - 2].color == current_color
-					):
-						create_special_piece(i, j, current_color, true, false)
-						all_pieces[i][j].matched = true
-						all_pieces[i][j].dim()
-						all_pieces[i][j - 1].matched = true
-						all_pieces[i][j - 1].dim()
-						all_pieces[i][j - 2].matched = true
-						all_pieces[i][j - 2].dim()
-						all_pieces[i + 1][j].matched = true
-						all_pieces[i + 1][j].dim()
-						all_pieces[i + 2][j].matched = true
-						all_pieces[i + 2][j].dim()
-				elif i <= width - 3 and j <= height - 3 and all_pieces[i][j].color == current_color:
-					if (
-						all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null and
-						all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null and
-						all_pieces[i + 1][j].color == current_color and
-						all_pieces[i + 2][j].color == current_color and
-						all_pieces[i][j + 1].color == current_color and
-						all_pieces[i][j + 2].color == current_color
-					):
-						create_special_piece(i, j, current_color, true, true)
-						all_pieces[i][j].matched = true
-						all_pieces[i][j].dim()
-						all_pieces[i][j + 1].matched = true
-						all_pieces[i][j + 1].dim()
-						all_pieces[i][j + 2].matched = true
-						all_pieces[i][j + 2].dim()
-						all_pieces[i + 1][j].matched = true
-						all_pieces[i + 1][j].dim()
-						all_pieces[i + 2][j].matched = true
-						all_pieces[i + 2][j].dim()
+				if (
+					i >= 2 and j >= 2 and
+					all_pieces[i][j].color == current_color and
+					all_pieces[i - 1][j] != null and all_pieces[i - 2][j] != null and
+					all_pieces[i][j - 1] != null and all_pieces[i][j - 2] != null and
+					all_pieces[i - 1][j].color == current_color and
+					all_pieces[i - 2][j].color == current_color and
+					all_pieces[i][j - 1].color == current_color and
+					all_pieces[i][j - 2].color == current_color
+				):
+					create_special_piece(i, j, current_color, false, true)
+				elif (
+					i <= width - 3 and j >= 2 and
+					all_pieces[i][j].color == current_color and
+					all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null and
+					all_pieces[i][j - 1] != null and all_pieces[i][j - 2] != null and
+					all_pieces[i + 1][j].color == current_color and
+					all_pieces[i + 2][j].color == current_color and
+					all_pieces[i][j - 1].color == current_color and
+					all_pieces[i][j - 2].color == current_color
+				):
+					create_special_piece(i, j, current_color, false, true)
+				elif (
+					i >= 2 and j <= height - 3 and
+					all_pieces[i][j].color == current_color and
+					all_pieces[i - 1][j] != null and all_pieces[i - 2][j] != null and
+					all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null and
+					all_pieces[i - 1][j].color == current_color and
+					all_pieces[i - 2][j].color == current_color and
+					all_pieces[i][j + 1].color == current_color and
+					all_pieces[i][j + 2].color == current_color
+				):
+					create_special_piece(i, j, current_color, false, true)
+				elif (
+					i <= width - 3 and j <= height - 3 and
+					all_pieces[i][j].color == current_color and
+					all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null and
+					all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null and
+					all_pieces[i + 1][j].color == current_color and
+					all_pieces[i + 2][j].color == current_color and
+					all_pieces[i][j + 1].color == current_color and
+					all_pieces[i][j + 2].color == current_color
+				):
+					create_special_piece(i, j, current_color, false, true)
 				if (
 					i <= width - 5 
 					and all_pieces[i + 1] != null and all_pieces[i + 2] != null 
