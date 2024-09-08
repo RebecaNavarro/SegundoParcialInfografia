@@ -20,7 +20,7 @@ var is_rainbow = false
 
 #niveles
 @onready var game_timer: Timer = $"../game_timer"
-var game_time_limit = 10
+var game_time_limit = 60 
 var current_count = 10
 @export var time_limit: int = 60  
 var remaining_time: float = 0.0 
@@ -33,7 +33,7 @@ var possible_pieces = [
 	preload("res://scenes/light_green_piece.tscn"),
 	preload("res://scenes/pink_piece.tscn"),
 	preload("res://scenes/yellow_piece.tscn"),
-	preload("res://scenes/orange_piece.tscn")
+	preload("res://scenes/orange_piece.tscn"),
 ]
 
 var rainbow = preload("res://scenes/rainbow.tscn")
@@ -44,7 +44,7 @@ var striped_pieces_horizontal = {
 	"light_green": preload("res://scenes/light_green_row.tscn"),
 	"pink": preload("res://scenes/pink_row.tscn"),
 	"yellow": preload("res://scenes/yellow_row.tscn"),
-	"orange": preload("res://scenes/orange_row.tscn")
+	"orange": preload("res://scenes/orange_row.tscn"),
 }
 
 var striped_pieces_vertical = {
@@ -53,7 +53,7 @@ var striped_pieces_vertical = {
 	"light_green": preload("res://scenes/light_green_column.tscn"),
 	"pink": preload("res://scenes/pink_column.tscn"),
 	"yellow": preload("res://scenes/yellow_column.tscn"),
-	"orange": preload("res://scenes/orange_column.tscn")
+	"orange": preload("res://scenes/orange_column.tscn"),
 }
 
 # current pieces in scene
@@ -95,6 +95,7 @@ func end_level():
 	game_timer.stop()  
 	setup_level()
 
+#esto no sirve
 func transition_to_time_mode():
 	state = TIME
 	remaining_time = time_limit
@@ -102,11 +103,11 @@ func transition_to_time_mode():
 
 func update_time(delta):
 	remaining_time -= delta
-	print(game_time_limit)
 	if remaining_time <= 0:
 		remaining_time = 0
 		game_over()   
 
+#Esto funciona
 func transition_to_moves_mode():
 	state = MOVE
 	start_moves_mode()  
@@ -188,10 +189,10 @@ func swap_pieces(column, row, direction: Vector2):
 		store_info(first_piece, other_piece, Vector2(column, row), direction)
 		all_pieces[column][row] = other_piece
 		all_pieces[column + direction.x][row + direction.y] = first_piece
-		first_piece.position = grid_to_pixel(column + direction.x, row + direction.y)
-		other_piece.position = grid_to_pixel(column, row)
-		#first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
-		#other_piece.move(grid_to_pixel(column, row))
+		#first_piece.position = grid_to_pixel(column + direction.x, row + direction.y)
+		#other_piece.position = grid_to_pixel(column, row)
+		first_piece.move(grid_to_pixel(column + direction.x, row + direction.y))
+		other_piece.move(grid_to_pixel(column, row))
 		if not move_checked:
 			find_matches()
 			decrement_moves()
@@ -326,11 +327,14 @@ func find_matches():
 					return
 				elif (
 					i <= width - 5 
-					and all_pieces[i + 1] != null and all_pieces[i + 2] != null 
+					and 
+					all_pieces[i + 1] != null and all_pieces[i + 2] != null 
 					and all_pieces[i + 3] != null and all_pieces[i + 4] != null
-					and all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null 
+					and 
+					all_pieces[i + 1][j] != null and all_pieces[i + 2][j] != null 
 					and all_pieces[i + 3][j] != null and all_pieces[i + 4][j] != null
-					and all_pieces[i + 1][j].color == current_color and all_pieces[i + 2][j].color == current_color and all_pieces[i + 3][j].color == current_color and all_pieces[i + 4][j].color == current_color
+					and 
+					all_pieces[i + 1][j].color == current_color and all_pieces[i + 2][j].color == current_color and all_pieces[i + 3][j].color == current_color and all_pieces[i + 4][j].color == current_color
 				):
 					all_pieces[i][j].matched = true
 					all_pieces[i][j].dim()
@@ -348,9 +352,11 @@ func find_matches():
 					return
 				elif (
 					j <= height - 5
-					and all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null
+					and 
+					all_pieces[i][j + 1] != null and all_pieces[i][j + 2] != null
 					and all_pieces[i][j + 3] != null and all_pieces[i][j + 4] != null
-					and all_pieces[i][j + 1].color == current_color and all_pieces[i][j + 2].color == current_color 
+					and 
+					all_pieces[i][j + 1].color == current_color and all_pieces[i][j + 2].color == current_color 
 					and all_pieces[i][j + 3].color == current_color and all_pieces[i][j + 4].color == current_color
 				):
 					all_pieces[i][j].matched = true
@@ -482,6 +488,7 @@ func destroy_matched():
 					was_matched = true
 					all_pieces[i][j].queue_free()
 					all_pieces[i][j] = null
+
 	move_checked = true
 	if was_matched:
 		update_score(5)
@@ -580,6 +587,7 @@ func game_over():
 		print("Time's up! Game over")
 	else:
 		print("No moves left. Game over")
+
 
 func _on_collapse_timer_timeout():
 	print("collapse")
